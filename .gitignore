@@ -2,3 +2,5 @@ vendor
 composer.lock
 .env
 .phpunit.cache
+.DS_Store
+.phpunit.result.cache

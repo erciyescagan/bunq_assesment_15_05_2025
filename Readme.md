@@ -267,8 +267,10 @@ curl -X POST http://localhost/api/v1/messages \
 }
 
 ```
-curl -X GET http://localhost/api/v1/messages/group/{groupId}
+
 ```
+curl -X GET http://localhost/api/v1/messages/group/{groupId}
+
 ```
 ```
 {

@@ -1,7 +1,36 @@
 
 ## Installation
 
----
+### Clone repository
+```
+git clone https://github.com/erciyescagan/bunq_assesment_15_05_2025.git
+```
+### Install composer
+
+```
+composer install 
+```
+
+### Copy .env.example in .env
+
+```
+mv .env.example .env
+```
+
+### Migrate database
+
+
+```
+php src/database/migrate.php
+```
+### Run server
+
+```
+php -S localhost:8000 -t src/public
+```
+
+
+
 
 ## Tech Stack
 

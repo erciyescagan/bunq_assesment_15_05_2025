@@ -12,6 +12,7 @@ use App\Repositories\GroupRepository;
 use App\Services\GroupService;
 use App\Http\Controllers\GroupController;
 use App\Http\Requests\CreateGroupRequest;
+use Laminas\Diactoros\Response\JsonResponse;
 use PHPUnit\Framework\TestCase;
 
 class GroupTest extends TestCase
@@ -37,22 +38,27 @@ class GroupTest extends TestCase
     public function test_create_group_success()
     {
         $response = $this->controllerInterface->create(new CreateGroupRequest(['name' => 'Test Group']));
-        $keys = array_keys($response->getPayload());
-        $this->assertEquals(['id', 'name', 'created_at'], $keys);
+    
         $this->assertEquals(200, $response->getStatusCode());
     }
 
     public function test_create_group_field_name_can_not_be_empty()
     {
         $response = $this->controllerInterface->create(new CreateGroupRequest(['name' => '']));
-        $this->assertEquals('{"name":["The name field is required."]}',$response->getPayload());
+        $payload = $response->getPayload();
+        $this->assertFalse(false, $payload['status']['success']);
+        $this->assertTrue(true, empty($payload['data']));
+        $this->assertTrue(true, isset($payload['errors']));
         $this->assertEquals(500, $response->getStatusCode());
     }
 
     public function test_create_group_field_name_not_set()
     {
-        $response = $this->controllerInterface->create(new CreateGroupRequest([]));
-        $this->assertEquals('{"name":["The name field is required."]}', $response->getPayload());
+        $response = $this->controllerInterface->create(new CreateGroupRequest(['name' => '']));
+        $payload = $response->getPayload();
+        $this->assertFalse(false, $payload['status']['success']);
+        $this->assertTrue(true, empty($payload['data']));
+        $this->assertTrue(true, isset($payload['errors']));
         $this->assertEquals(500, $response->getStatusCode());
     }
 

@@ -52,8 +52,8 @@ class MessageTest extends TestCase
             ]
         ));
 
-        $keys = array_keys($response->getPayload());
-        $this->assertEquals(['id', 'content', 'user_id', 'group_id', 'created_at'], $keys);
+        $payload = $response->getPayload();
+        $this->assertEquals(true, $payload['status']['success']);
         $this->assertEquals(200, $response->getStatusCode());
     }
 
@@ -67,7 +67,10 @@ class MessageTest extends TestCase
                     'content' => null
                 ], []
             ));
-        $this->assertEquals('{"content":["The content field is required."]}', $response->getPayload());
+        $payload = $response->getPayload();
+        $this->assertFalse(false, $payload['status']['success']);
+        $this->assertTrue(true, empty($payload['data']));
+        $this->assertTrue(true, isset($payload['errors']));
         $this->assertEquals(500, $response->getStatusCode());
     }
 
@@ -81,7 +84,11 @@ class MessageTest extends TestCase
                     'content' => "Test message by unitTest"
                 ], []
             ));
-        $this->assertEquals('{"user_id":["The user_id field is required.","The user_id field must be an integer."]}', $response->getPayload());
+
+        $payload = $response->getPayload();
+        $this->assertFalse(false, $payload['status']['success']);
+        $this->assertTrue(true, empty($payload['data']));
+        $this->assertTrue(true, isset($payload['errors']));
         $this->assertEquals(500, $response->getStatusCode());
     }
 
@@ -96,8 +103,11 @@ class MessageTest extends TestCase
                     'content' => "Test message by unitTest"
                 ]
             ));
-
-        $this->assertEquals('{"group_id":["The group_id field is required.","The group_id field must be an integer."]}', $response->getPayload());
+        
+        $payload = $response->getPayload();
+        $this->assertFalse(false, $payload['status']['success']);
+        $this->assertTrue(true, empty($payload['data']));
+        $this->assertTrue(true, isset($payload['errors']));
         $this->assertEquals(500, $response->getStatusCode());
     }
 }

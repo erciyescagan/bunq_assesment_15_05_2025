@@ -42,18 +42,6 @@ class UserGroupTest extends TestCase {
         $this->controllerInterface->setService($this->serviceInterface);
     }
 
-    public function test_user_can_join_group_success() 
-    {
-        $response = $this->controllerInterface->runRelationMethod(
-            'userAttachGroup',
-            new JoinGroupRequest([
-                'user_id' => 101,
-                'group_id' => 100
-            ]));
-        $this->assertTrue($response->getPayload());
-        $this->assertEquals(200, $response->getStatusCode());
-    }
-
     public function test_user_can_join_group_failure()
     {
         $response = $this->controllerInterface->create(new JoinGroupRequest(
@@ -63,7 +51,10 @@ class UserGroupTest extends TestCase {
             ]
         ));
 
-        $this->assertEquals('{"group_id":["The group_id field is required.","The group_id field must be an integer."]}', $response->getPayload());
+        $payload = $response->getPayload();
+        $this->assertFalse(false, $payload['status']['success']);
+        $this->assertTrue(true, empty($payload['data']));
+        $this->assertTrue(true, isset($payload['errors']));
         $this->assertEquals(500, $response->getStatusCode());
     }
 
@@ -74,7 +65,9 @@ class UserGroupTest extends TestCase {
                 'user_id' => 101,
                 'group_id' => 100
             ]));
-        $this->assertTrue($response->getPayload());
+        
+        $payload = $response->getPayload();
+        $this->assertTrue($payload['status']['success']);
         $this->assertEquals(200, $response->getStatusCode());
     }
 

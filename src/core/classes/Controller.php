@@ -76,10 +76,9 @@ abstract class Controller implements ControllerInterface
         $data = [];
         $data['status']['success'] = in_array($statusCode, [200,201]) ? true : false;
         $data['status']['code'] = $statusCode;
-        $data['data']['data_count'] = is_array($tempData) ? count($tempData) : 0;
-        $data['data'] = $tempData;
         if(!in_array($statusCode, [200,201])) {
-            $data['status']['errors'] = $tempData;
+            $data['errors'] = $tempData;
+            $data['data'] = [];
         }
         return $data;
     }

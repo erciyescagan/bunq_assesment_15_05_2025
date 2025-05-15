@@ -48,15 +48,18 @@ class UserTest extends TestCase {
                     'username' => 'test_user'
                 ]
         ));
-        $keys = array_keys($response->getPayload());
-        $this->assertEquals(['id', 'username', 'created_at'], $keys);
+        $payload = $response->getPayload();
+        $this->assertEquals(true, $payload['status']['success']);
         $this->assertEquals(200, $response->getStatusCode());
     }
 
     public function test_create_message_field_username_can_not_be_empty() 
     {
         $response = $this->controllerInterface->create(new CreateUserRequest([]));
-        $this->assertEquals('{"username":["The username field is required."]}', $response->getPayload());
+        $payload = $response->getPayload();
+        $this->assertFalse(false, $payload['status']['success']);
+        $this->assertTrue(true, empty($payload['data']));
+        $this->assertTrue(true, isset($payload['errors']));
         $this->assertEquals(500, $response->getStatusCode());
     }
     

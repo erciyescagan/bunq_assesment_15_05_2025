@@ -6,13 +6,15 @@ use App\Core\Interfaces\ConnectionInterface;
 use App\Core\Interfaces\MigrateInterface;
 use Exception;
 
-abstract class Migrate implements MigrateInterface {
+class Migrate implements MigrateInterface {
 
     protected ?\PDO $pdo;
-    private ConnectionInterface $connectionInterface; 
 
-    public function __construct() 
+    public function __construct(public ConnectionInterface $connectionInterface) 
     {
+        $this->connectionInterface = $connectionInterface;
+        $this->setConnection($this->connectionInterface);
+
         if($this->getConnection()) {
             try {
                 $this->pdo = $this->connectionInterface->connect();
@@ -21,7 +23,6 @@ abstract class Migrate implements MigrateInterface {
                 throw new \PDOException("Error occured: ", $e->getMessage());
             }
         }
-
     }
 
     public function setConnection(ConnectionInterface $connectionInterface): void

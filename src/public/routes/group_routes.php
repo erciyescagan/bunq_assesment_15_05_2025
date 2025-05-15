@@ -56,7 +56,7 @@ $app->delete('/api/v1/groups/{id}', function (Request $request, Response $respon
 
     if ($id) {
         $data = $controller->delete($id);
-        $payload = json_encode($data);
+        $payload = json_encode($data->getPayload());
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     } else {

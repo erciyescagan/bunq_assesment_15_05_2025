@@ -37,19 +37,8 @@ $app->delete('/api/v1/groups/{groupId}/users/{userId}', function(Request $reques
     $groupId = (int) $args['groupId'];
 
     $data = $controller->runRelationMethod("userDetachGroup", new LeaveGroupRequest(['group_id' => $groupId, 'user_id' => $userId]));
-    if ($data->getPayload()) {
-        $response->getBody()->write(json_encode([
-            'status' => 'success',
-            'message' => 'User left group successfully.'
-        ]));
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
-    }
-    
-    $response->getBody()->write(json_encode([
-        'status' => 'error',
-        'message' => 'Failed to leave group.'
-    ]));     
-    return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
-
+    $payload = json_encode($data->getPayload());
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
 
 });

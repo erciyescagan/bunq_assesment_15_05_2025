@@ -50,20 +50,6 @@ abstract class Request implements RequestInterface
         if ($rule === 'integer' && !filter_var($value, FILTER_VALIDATE_INT)) {
             $this->addError($field, 'The ' . $field . ' field must be an integer.');
         }
-
-        if (str_starts_with($rule, 'max:')) {
-            $max = (int)str_replace('max:', '', $rule);
-            if (is_string($value) && strlen($value) > $max) {
-                $this->addError($field, 'The ' . $field . ' field must not exceed ' . $max . ' characters.');
-            }
-        }
-
-        if (str_starts_with($rule, 'min:')) {
-            $min = (int)str_replace('min:', '', $rule);
-            if (is_string($value) && strlen($value) < $min) {
-                $this->addError($field, 'The ' . $field . ' field must be at least ' . $min . ' characters.');
-            }
-        }
     }
 
 

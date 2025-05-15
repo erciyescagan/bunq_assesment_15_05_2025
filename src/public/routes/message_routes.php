@@ -100,7 +100,7 @@ $app->get('/api/v1/messages', function(Request $request, Response $response, $ar
 $app->delete('/api/v1/messages/{id}', function(Request $request, Response $response, $args) use ($controller) {
     $id = (int) $args['id'];
     $data = $controller->delete($id);
-    $payload = json_encode($data);
+    $payload = json_encode($data->getPayload());
     $response->getBody()->write($payload);
     $response = $response->withStatus(200);
     $response = $response->withHeader('Content-Type', 'application/json');

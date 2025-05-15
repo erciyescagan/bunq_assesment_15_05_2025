@@ -26,26 +26,22 @@ abstract class Controller implements ControllerInterface
             $request->validate();
             $data = $request->all();
             $saved = $this->getService()->create($data);
-            return $this->json($saved);
+            return $this->json($saved, 200);
         } catch (\Exception $e) {
-            return $this->json($e->getMessage(), 500);
+            return $this->json(json_decode($e->getMessage(),true), 500);
         }
     }
 
     public function get(): JsonResponse
     {
         $data = $this->getService()->get();
-        return $this->json($data);
+        return $this->json($data, 200);
     }
     
     public function delete(int $id): JsonResponse
     {
-        try {
-            $deleted = $this->getService()->delete($id);
-            return $this->json(['message' => 'Data id : '.$id.' has been deleted successfully'], 200);
-        } catch (\Exception $e) {
-            throw new \Exception("Data id : ". $id . " not found");
-        }
+        $this->getService()->delete($id);
+        return $this->json(['message' => 'Data id : '.$id.' has been deleted'], 200);
     }
     public function getById(int $id): JsonResponse
     { 
@@ -56,15 +52,36 @@ abstract class Controller implements ControllerInterface
     public function runRelationMethod(string $relation, RequestInterface $request): JsonResponse
     {
         try {
-            return $this->json($this->getService()->$relation($request->all()), 200);
+            $data = $this->getService()->$relation($request->all());
+            return $this->json([$data], 200);
         } catch (\Exception $e) {
-            return $this->json($e->getMessage(), 404);
+            return $this->json([$e->getMessage()], 500); 
         }
     }
     
-    protected function json($data, int $statusCode = 200): JsonResponse
+    protected function json(array $data, $statusCode): JsonResponse
+    {   
+        return $this->setResponse($data, $statusCode);
+    }
+
+    private function setResponse(array $data, int $statusCode): JsonResponse
     {
+        $data = $this->setResponseData($data, $statusCode);
         return new JsonResponse($data, $statusCode);
+    }
+
+    private function setResponseData(array $data, int $statusCode): array
+    {
+        $tempData = $data;
+        $data = [];
+        $data['status']['success'] = in_array($statusCode, [200,201]) ? true : false;
+        $data['status']['code'] = $statusCode;
+        $data['data']['data_count'] = is_array($tempData) ? count($tempData) : 0;
+        $data['data'] = $tempData;
+        if(!in_array($statusCode, [200,201])) {
+            $data['status']['errors'] = $tempData;
+        }
+        return $data;
     }
 
    

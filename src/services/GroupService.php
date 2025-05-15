@@ -10,8 +10,7 @@ class GroupService extends Service {
     {
         $table = $this->getRepository()->getTable();
         $primaryKey = $this->getRepository()->getPrimaryKey();
-        
-        return $this->getRepository()
+        $data = $this->getRepository()
                     ->select([
                         $table.".id as group_id", 
                         $table.".name as group_name", 
@@ -23,6 +22,8 @@ class GroupService extends Service {
                     ->innerJoin('users', 'group_users', 'id', 'user_id')
                     ->where($table.".".$primaryKey, "=", $data['id'])
                     ->get();
+        return !is_null($data) ? $data : [];
+    
      }
     
 }

@@ -1,31 +1,18 @@
-# Bunq Assessment Project
 
-## 📖 Proje Hakkında
-
-Bu proje, bir kullanıcı-grup-mesaj yönetim sistemi geliştirmek için oluşturulmuştur. Kullanıcılar gruplara katılabilir, gruplar içinde mesaj gönderebilir ve mesajları görüntüleyebilir. Proje, **PHP** ve **PDO** kullanılarak geliştirilmiş olup, temiz kod prensiplerine uygun bir yapı sunar.
+## Installation
 
 ---
 
-## 🚀 Özellikler
+## Tech Stack
 
-- Kullanıcıların gruplara katılması ve gruplardan ayrılması.
-- Gruplar içinde mesaj gönderme ve görüntüleme.
-- RESTful API standartlarına uygun bir yapı.
-- Dinamik sorgu oluşturma ve ilişkisel veritabanı yönetimi.
-- Hata yönetimi ve veri doğrulama.
-
----
-
-## 🛠️ Teknolojiler
-
-- **PHP 8.1+**
-- **PDO** (PHP Data Objects)
-- **SQLite** (veya başka bir veritabanı)
-- **Composer** (bağımlılık yönetimi)
+- **PHP 8.4.6+**
+- **PDO** 
+- **SQLite** 
+- **Composer**
 
 ---
 
-## 📂 Proje Yapısı
+## Structure
 
 ```plaintext
 src/
